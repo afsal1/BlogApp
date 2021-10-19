@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>home page</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <!-- Side navigation -->
+    <div class="sidenav">
+      <div class="image" style="padding-left: 30px;">
+        <img
+          src="{% static 'images/dummy_image.png' %}"
+          class="img-circle"
+          style="height: 90px; width: 90px;"
+        />
+        <h3 style="color: whitesmoke;">{{ user.username }}</h3>
+      </div>
+
+      <a href="/homepage/">Home</a>
+      <a href="/show_friends/">Friends</a>
+      <a href="/find_people/">Find People</a>
+      <a href="/upload_image_to_feed/">Upload Images</a>
+      <a href="/upload_videos_to_feed/">Upload Videos</a>
+      <a href="/my_image_feed/">My Image Feed</a>
+      <a href="/my_video_feed/">My Video Feed</a>
+      <a href="/confirm_accept_request/">Accept Request</a>
+      <a href="/logout/">Logout</a>
+    </div>
+
+    <!-- Page content -->
+    <div class="main">
+      {% block content %} 
+      
+      {% for video in video_feed %}
+      <div class="col-md-4" style="padding-left: 30px;">
+        {{ video.title }}
+        <video style="width: 100%; float: left; margin-right: 10px;" controls>
+          <source src="{{ video.video.url }}" type="video/webm" />
+        </video>
+      </div>
+      {% endfor %} 
+      {% for image in image_feeds %}
+      <div class="col-md-4" style="padding-left: 30px;">
+        {{ image.title }}
+        <img
+          src="{{ image.image.url }}"
+          class="img-responsive"
+          style="width: 100%; float: left; margin-right: 10px;"
+        />
+      </div>
+      {% endfor %} 
+      {% endblock %}
+    </div>
+  </body>
+</html>

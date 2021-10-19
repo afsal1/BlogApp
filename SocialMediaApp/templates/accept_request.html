@@ -1,0 +1,17 @@
+{% extends "Homepage.html" %} {% load static %} {% block content %}
+<div class="card" style="width: 400px;">
+  {% for friend in friend_request %}
+  <img
+    class="card-img-top"
+    src="{% static 'images/dummy_image.png' %}"
+    style="height: 90px; width: 90px;"
+    alt="Card image"
+  />
+  <div class="card-body">
+    <h4 class="card-title">{{friend.from_user}}</h4>
+    <a href="/accept_friend_request/{{ friend.id }}" class="btn btn-primary">Accept Request</a>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

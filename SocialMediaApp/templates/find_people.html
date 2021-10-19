@@ -1,0 +1,21 @@
+{% extends "Homepage.html" %} {% load static %} {% block content %}
+<div class="card" style="width: 400px;">
+  {% for user in users %}
+  {% if not user.is_superuser %}
+  {% if user not in request.user.friends.all and user != request.user %}
+  <img
+    class="card-img-top"
+    src="{% static 'images/dummy_image.png' %}"
+    style="height: 90px; width: 90px;"
+    alt="Card image"
+  />
+  <div class="card-body">
+    <h4 class="card-title">{{user.username}}</h4>
+    <a href="/send_friend_request/{{ user.id }}" class="btn btn-primary">Send Request</a>
+  </div>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+</div>
+
+{% endblock %}

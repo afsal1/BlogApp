@@ -1,0 +1,11 @@
+{% extends "Homepage.html" %} {% load static %} {% block content %} 
+{% for feed in my_feed %}
+<div class="col-md-2">
+  {{ feed.title }}
+  <video style="width: 100%; float: left; margin-right: 10px;" controls>
+    <source src="{{ feed.video.url }}" type="video/webm" />
+  </video>
+  
+</div>
+{% endfor %} 
+{% endblock %}
