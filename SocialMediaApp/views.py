@@ -155,8 +155,14 @@ def show_friends(request):
     context = {
         'friends': friends,
     }
-    return render(request, 'show_friends.html', context)
-
+    if friends:
+        return render(request, 'show_friends.html', context)
+    else:
+        message = "You have no friends"
+        context = {
+        'message': message,
+    }
+        return render(request, 'show_friends.html', context)
 
 def upload_image_to_feed(request):
     """
