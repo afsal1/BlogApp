@@ -4,9 +4,9 @@ Setup
 
 The first thing to do is to clone the repository:
 
-$ git clone https://github.com/afsal1/SocialMediaApp.git
+$ git clone https://github.com/afsal1/BlogApp.git
 
-$ cd SocialMediaApp
+$ cd BlogApp
 
 Create a virtual environment to install dependencies in and activate it:
 
@@ -33,5 +33,4 @@ Now you can run the server:
 Walkthrough
 
 Once your app running with python manage.py runserver , home page shows the login page. First time you need to create an account to login.
-Signup with proper credentials then redirect to login page then you can login.After login you can send friend request,add media to the feeds, 
-see other friend's feed.
+Signup with proper credentials then redirect to login page then you can login
