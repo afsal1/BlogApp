@@ -1,4 +1,4 @@
-# SocialMediaApp
+# BlogApp
 
 Setup
 
