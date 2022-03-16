@@ -53,7 +53,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'SocialMedia.urls'
 
-AUTH_USER_MODEL = 'SocialMediaApp.User'
+# AUTH_USER_MODEL = 'SocialMediaApp.User'
 
 TEMPLATES = [
     {

@@ -12,8 +12,9 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
   </head>
-  <body>
+  <body style="background-color: wheat;">
     <!-- Side navigation -->
     <div class="sidenav">
       <div class="image" style="padding-left: 30px;">
@@ -26,38 +27,21 @@
       </div>
 
       <a href="/homepage/">Home</a>
-      <a href="/show_friends/">Friends</a>
-      <a href="/find_people/">Find People</a>
-      <a href="/confirm_accept_request/">Accept Request</a>
-      <a href="/my_image_feed/">My Image Feed</a>
-      <a href="/my_video_feed/">My Video Feed</a>
-      <a href="/upload_image_to_feed/">Upload Images</a>
-      <a href="/upload_videos_to_feed/">Upload Videos</a>
+      <a href="/all_feeds/">All Feeds</a>
+      <a href="/upload_feed/">Upload Feed</a>
       <a href="/logout/">Logout</a>
     </div>
 
     <!-- Page content -->
     <div class="main">
       {% block content %} 
-      
-      {% for video in video_feed %}
-      <div class="col-md-4" style="padding-left: 30px;">
-        {{ video.title }}
-        <video style="width: 100%; float: left; margin-right: 10px;" controls>
-          <source src="{{ video.video.url }}" type="video/webm" />
-        </video>
+      <div class="form-group row" style="align-content: center;">
+        <label class="col-sm-1 col-form-label"></label>
+        <div class="col-md-6" style="padding-left: 370px;padding-top:300px;">
+          <a href="/upload_feed/"><button type="button" class="btn btn-primary">New Feed</button></a>
+          <a href="/all_feeds"><button type="button" class="btn btn-primary">View All Feeds</button></a>
+        </div>
       </div>
-      {% endfor %} 
-      {% for image in image_feeds %}
-      <div class="col-md-4" style="padding-left: 30px;">
-        {{ image.title }}
-        <img
-          src="{{ image.image.url }}"
-          class="img-responsive"
-          style="width: 100%; float: left; margin-right: 10px;"
-        />
-      </div>
-      {% endfor %} 
       {% endblock %}
     </div>
   </body>

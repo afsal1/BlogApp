@@ -24,19 +24,10 @@ urlpatterns = [
     path('homepage/', homepage, name="home page"),
     path('signup/', signupview, name="signup view"),
     path('', loginview, name="login view"),
-    path('find_people/', find_people, name="find people"),
-    path('send_friend_request/<int:userid>/',
-         send_friend_request, name="send friend request"),
-    path('accept_friend_request/<int:requestid>/',
-         accept_friend_request, name="accept friend request"),
-    path('confirm_accept_request/',
-         confirm_accept_request, name="confirm accept friend request"),
     path('logout/', logout, name="logout"),
-    path('show_friends/', show_friends, name="show_friends"),
-    path('upload_image_to_feed/', upload_image_to_feed, name="upload_image_to_feed"),
-    path('upload_videos_to_feed/', upload_videos_to_feed, name="upload_videos_to_feed"),
-    path('my_video_feed/', my_video_feed, name="my_video_feed"),
-    path('my_image_feed/', my_image_feed, name="my_image_feed"),
+    path('upload_feed/', upload_feed, name="upload_feed"),
+    path('all_feeds/', all_feeds, name="all_feeds"),
+    path('filtered_feeds/', filtered_feeds, name="filtered_feeds"),
     
 ]
 

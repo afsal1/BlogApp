@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from .models import User, FriendRequest, ImageMedia, VideoMedia
+from .models import User, Feeds
 from django.contrib import messages
 
 
@@ -15,13 +15,11 @@ def homepage(request):
 
     """
     user = request.user.id
-    friends = User.objects.filter(friends=request.user).first()
-    image_feeds = ImageMedia.objects.filter(friend=friends)
-    video_feed = VideoMedia.objects.filter(friend=friends)
+    # friends = User.objects.filter(friends=request.user).first()
+    image_feeds = Feeds.objects.all()
 
     context = {
         'image_feeds': image_feeds,
-        'video_feed': video_feed
     }
     return render(request, 'Homepage.html', context)
 
@@ -80,156 +78,77 @@ def loginview(request):
         return render(request, 'login.html')
 
 
-def find_people(request):
-    """
-        Function Name: find_people
-        Description: search for new friends
-        Return: registered user details
-
-    """
-    users = User.objects.all()
-    context = {
-        'users': users,
-    }
-    return render(request, 'find_people.html', context)
-
-
-@login_required
-def send_friend_request(request, userid):
-    """
-        Function Name: send_friend_request
-        Description: find new friends by sending request
-        Return: http response
-
-    """
-    from_user = request.user
-    to_user = User.objects.get(id=userid)
-    friend_request, created = FriendRequest.objects.get_or_create(
-        from_user=from_user, to_user=to_user)
-    if created:
-        return HttpResponse('friend request sent')
-    else:
-        return HttpResponse('friend request already sent')
-
-
-@login_required
-def accept_friend_request(request, requestid):
-    """
-        Function Name: accept_friend_request
-        Description: adding new friends by accepting request
-        Return: http response
-
-    """
-    friend_request = FriendRequest.objects.get(id=requestid)
-    if friend_request.to_user == request.user:
-        friend_request.to_user.friends.add(friend_request.from_user)
-        friend_request.from_user.friends.add(friend_request.to_user)
-        friend_request.delete()
-        return HttpResponse('friend request Accepted')
-    else:
-        return HttpResponse('friend request not Accepted')
-
-
-def confirm_accept_request(request):
-    """
-        Function Name: confirm_accept_request
-        Description: to list all friend requests
-        Return: list of friend requests
-
-    """
-    friend_request = FriendRequest.objects.filter(to_user=request.user)
-    context = {
-        'friend_request': friend_request,
-    }
-    return render(request, 'accept_request.html', context)
-
-
-def show_friends(request):
-    """
-        Function Name: show_friends
-        Description: to list all the friends
-        Return: list of all friends
-
-    """
-    friends = User.objects.filter(friends=request.user)
-    context = {
-        'friends': friends,
-    }
-    if friends:
-        return render(request, 'show_friends.html', context)
-    else:
-        message = "You have no friends"
-        context = {
-        'message': message,
-    }
-        return render(request, 'show_friends.html', context)
-
-def upload_image_to_feed(request):
+def upload_feed(request):
     """
         Function Name: upload_image_to_feed
-        Description: adding new images to the feed
+        Description: adding post to the feed
         Return: return to my feed
 
     """
     if request.method == 'POST':
         title = request.POST["title"]
-        image = request.FILES['image']
-        friend = request.user
-        feed = ImageMedia.objects.create(
-            title=title, image=image, friend=friend)
+        tags = request.POST["tags"]
+        content = request.POST["content"]
+        category = request.POST['category']
+        feed = Feeds.objects.create(
+            title=title, category=category, tags=tags,
+            content=content )
 
-        return redirect('/my_image_feed/')
+        return redirect('/all_feeds/')
     else:
-        return render(request, 'upload_image_feeds.html')
+        return render(request, 'upload_post.html')
 
 
-def upload_videos_to_feed(request):
-    """
-        Function Name: upload_videos_to_feed
-        Description: adding new videos to the feed
-        Return: return to my feed
-
-    """
-    if request.method == 'POST':
-        title = request.POST["title"]
-        video = request.FILES['video']
-        friend = request.user
-        feed = VideoMedia.objects.create(
-            title=title, video=video, friend=friend)
-
-        return redirect('/my_video_feed/')
-    else:
-        return render(request, 'upload_video_feeds.html')
-
-
-def my_image_feed(request):
+def all_feeds(request):
     """
         Function Name: my_feed
-        Description: to show the images added by the user
+        Description: to show the feeds added by the user
         Return: all the feeds of the user
 
     """
-    if request.method == 'GET':
-        feed = ImageMedia.objects.filter(friend=request.user.id)
-        context = {
-            'my_feed': feed
-        }
-        return render(request, 'my_image_feed.html', context)
+ 
+    feed = Feeds.objects.all()
+    context = {
+        'my_feed': feed
+    }
+    return render(request, 'all_feeds.html', context)
 
 
-def my_video_feed(request):
+
+def filtered_feeds(request):
     """
-        Function Name: my_feed
-        Description: to show the videos added by the user
-        Return: all the feeds of the user
+        Function Name: filtered_feeds
+        Description: to show the filtered_feeds
+        Return: filtered_feeds 
 
     """
-    if request.method == 'GET':
-        feed = VideoMedia.objects.filter(friend=request.user.id)
+ 
+    category = category = request.POST['category']
+    all_feed = Feeds.objects.all()
+    
+    if category == "blog":
+        blog_feed = Feeds.objects.filter(category=category)
         context = {
-            'my_feed': feed
+            'my_feed': blog_feed
         }
-        return render(request, 'my_video_feed.html', context)
+        return render(request, 'filtered_feeds.html', context)
+    elif category == "travel":
+        travel_feed = Feeds.objects.filter(category=category)
+        context = {
+            'my_feed': travel_feed
+        }
+        return render(request, 'filtered_feeds.html', context)
+    elif category == "other":
+        other_feed = Feeds.objects.filter(category=category)
+        context = {
+            'my_feed': other_feed
+        }
+        return render(request, 'filtered_feeds.html', context)
+    else:
+        context = {
+            'my_feed': all_feed
+        }
+        return render(request, 'filtered_feeds.html', context)
 
 
 def logout(request):

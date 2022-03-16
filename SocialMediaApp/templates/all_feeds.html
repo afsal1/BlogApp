@@ -1,0 +1,24 @@
+{% extends "Homepage.html" %} {% load static %} {% block content %}
+<div style="padding-top:100px;">
+  <form action="">
+    <label for="category">Choose Category:</label>
+    <select name="category" id="category">
+      <option value="blog">Blog</option>
+      <option value="travel">Travel</option>
+      <option value="other">Other</option>
+      <option value="all">All</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+<div>
+
+{% for feed in my_feed %} 
+<div class="col-md-2">
+  <h1>{{ feed.title }}</h1>
+</br>
+  <h4>{{ feed.tags }}</h4>
+  <p>{{ feed.content }}</p>
+</div>
+{% endfor %}
+
+{% endblock %}
